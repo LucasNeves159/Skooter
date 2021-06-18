@@ -99,6 +99,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         if (!this.eElementos.isEmpty() && hHero.getVida() > 0) {
             this.cControle.desenhaTudo(eElementos);
             this.cControle.processaTudo(eElementos);
+            this.cControle.processaEsteiras(eElementos);
             if (!this.cControle.haColecionaveisAinda(eElementos)) {
                 if (!this.eElementos.isEmpty()) {
                     ++level;
