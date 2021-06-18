@@ -29,6 +29,18 @@ public class ControleDeJogo {
                 }
         }
     }
+    
+    // Verifica se é esteira e chama o método de mover objetos
+    public void processaEsteiras(ArrayList<Elemento> e) {
+        Esteira eTemp;
+        
+        for (int i = 0; i < e.size(); i++){
+            if (e.get(i).isbEsteira()) {
+                eTemp = (Esteira) e.get(i);
+                eTemp.arremessar(e);
+            }
+        }
+    }
 
     private boolean ehPosicaoValidaAux(ArrayList<Elemento> e, Posicao newP) {
         Elemento eTemp;
