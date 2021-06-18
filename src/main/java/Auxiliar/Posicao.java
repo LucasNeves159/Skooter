@@ -26,6 +26,13 @@ public class Posicao implements Serializable {
         return true;
     }
 
+    public void setProjecao(int linha, int coluna) {
+        linhaAnterior = this.linha;
+        this.linha = linha;
+        colunaAnterior = this.coluna;
+        this.coluna = coluna;
+    }
+
     public int getLinha() {
         return linha;
     }

@@ -7,5 +7,7 @@ public class QuadradoVerde extends Elemento {
         super("quadradoVerde.png");
         this.setPosicao(umaPosicao);
         bTransponivel = false;
+        bMortal = false;
+        bQuebravel = true;
     }
 }

@@ -10,6 +10,7 @@ public class Robo extends Elemento {
         super(sNomeImagePNG);
         this.setPosicao(umaPosicao);
         bTransponivel = false;
+        bMortal = true;
     }
 
     public void autoDesenho() {

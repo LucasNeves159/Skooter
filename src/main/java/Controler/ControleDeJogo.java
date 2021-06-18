@@ -23,20 +23,42 @@ public class ControleDeJogo {
                 /* Nem todos os elementos podem ser transpostos pelo heroi */
                 if (eTemp.isbTransponivel())
                     e.remove(eTemp);
+                else if (eTemp.isbMortal()) {
+                    hHero.setVida(hHero.getVida() - 1);
+                    e.clear();
+                }
         }
     }
 
-    public boolean ehPosicaoValida(ArrayList<Elemento> e, Posicao p) {
+    private boolean ehPosicaoValidaAux(ArrayList<Elemento> e, Posicao newP) {
+        Elemento eTemp;
+        /* Validacao da posicao de todos os elementos com relacao a Posicao newP */
+        for (int i = 1; i < e.size(); i++) { /* Olha todos os elementos */
+            eTemp = e.get(i); /* Pega o i-esimo elemento do jogo */
+            if (eTemp.getPosicao().estaNaMesmaPosicao(newP))
+                return false;
+        }
+        return true;
+    }
+
+    public boolean ehPosicaoValida(ArrayList<Elemento> e, Posicao p, Posicao newP) {
         Elemento eTemp;
         /* Validacao da posicao de todos os elementos com relacao a Posicao p */
         for (int i = 1; i < e.size(); i++) { /* Olha todos os elementos */
             eTemp = e.get(i); /* Pega o i-esimo elemento do jogo */
             if (!eTemp.isbTransponivel())
                 if (eTemp.getPosicao().estaNaMesmaPosicao(p))
+                    if (eTemp.isbMovivel()) {
+                        if (ehPosicaoValidaAux(e, newP) && eTemp.setPosicao(newP))
+                            return true;
+                        else
+                            return false;
+                    }
                     /*
                      * A posicao p é invalida, pois ha um elemento (i-esimo eTemp) intransponivel lá
                      */
-                    return false;
+                    else
+                        return false;
         }
         return true;
     }
@@ -48,12 +70,11 @@ public class ControleDeJogo {
             eTemp = e.get(i); /* Pega o i-esimo elemento do jogo */
             if (eTemp == umElemento)
                 continue;
-            if (!eTemp.isbTransponivel())
-                if (eTemp.getPosicao().estaNaMesmaPosicao(umElemento.getPosicao()))
-                    /*
-                     * A posicao p é invalida, pois ha um elemento (i-esimo eTemp) intransponivel lá
-                     */
-                    return false;
+            if (eTemp.getPosicao().estaNaMesmaPosicao(umElemento.getPosicao()))
+                /*
+                 * A posicao p é invalida, pois ha um elemento (i-esimo eTemp) intransponivel lá
+                 */
+                return false;
         }
         return true;
     }
@@ -62,6 +83,18 @@ public class ControleDeJogo {
         for (int i = 1; i < e.size(); i++) { /* Olha todos os elementos */
             if (e.get(i).getClass().getName() == "Modelo.Coletavel")
                 return true;
+        }
+        return false;
+    }
+
+    public boolean quebrarBloco(ArrayList<Elemento> e, Posicao projecao) {
+        for (int i = 0; i < e.size(); i++) {
+            if (e.get(i).getPosicao().estaNaMesmaPosicao(projecao)) {
+                if (e.get(i).isbQuebravel()) {
+                    e.remove(i);
+                    return true;
+                }
+            }
         }
         return false;
     }

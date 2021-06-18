@@ -11,11 +11,22 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Hero extends Elemento implements Serializable {
+    private int vida;
+
     public Hero(String sNomeImagePNG) {
         super(sNomeImagePNG);
+        vida = 3;
     }
 
     public void voltaAUltimaPosicao() {
         this.pPosicao.volta();
+    }
+
+    public int getVida() {
+        return vida;
+    }
+
+    public void setVida(int iVida) {
+        vida = iVida;
     }
 }

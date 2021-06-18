@@ -14,6 +14,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     private Hero hHero;
     private Fase faseAtual;
     private int level;
+    private Posicao posicaoProjetada = new Posicao(0, 0);
     private ArrayList<Elemento> eElementos;
     private ControleDeJogo cControle = new ControleDeJogo();
     private Graphics g2;
@@ -38,11 +39,11 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         /* Cria eElementos adiciona elementos */
         /* O protagonista (heroi) necessariamente precisa estar na posicao 0 do array */
         hHero = new Hero("skooter_hero.png"); /* https://www.online-image-editor.com/ */
-        hHero.setPosicao(0, 7);
         faseAtual = new Fase(100);
-        faseAtual.setFase1(hHero);
+        faseAtual.setFase4(hHero);
         eElementos = faseAtual;
         level = 1;
+        posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
         /*
          * this.addElemento(hHero); CoronaVirus cTeste = new
          * CoronaVirus("robo_azul.png"); cTeste.setPosicao(5, 5);
@@ -95,11 +96,14 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
 
         /* Aqui podem ser inseridos novos processamentos de controle */
-        if (!this.eElementos.isEmpty()) {
+        if (!this.eElementos.isEmpty() && hHero.getVida() > 0) {
             this.cControle.desenhaTudo(eElementos);
             this.cControle.processaTudo(eElementos);
             if (!this.cControle.haColecionaveisAinda(eElementos)) {
-                if (++level < 3) {
+                if (!this.eElementos.isEmpty()) {
+                    ++level;
+                }
+                if (hHero.getVida() > 0 && level < 4) {
                     switch (level) {
                         case 1:
                             faseAtual.setFase1(hHero);
@@ -107,10 +111,13 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                         case 2:
                             faseAtual.setFase2(hHero);
                             break;
+                        case 3:
+                            faseAtual.setFase3(hHero);
+                            break;
                     }
                     eElementos = faseAtual;
                 } else
-                    return;
+                    eElementos.clear();
             }
         }
 
@@ -136,6 +143,18 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         timer.schedule(redesenhar, 0, Consts.FRAME_INTERVAL);
     }
 
+    private void keyPosicaoProjetada(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() - 1, hHero.getPosicao().getColuna());
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            posicaoProjetada.setProjecao(hHero.getPosicao().getLinha(), hHero.getPosicao().getColuna() - 1);
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            posicaoProjetada.setProjecao(hHero.getPosicao().getLinha(), hHero.getPosicao().getColuna() + 1);
+        }
+    }
+
     public void keyPressed(KeyEvent e) {
         /* Movimento do heroi via teclado */
         if (e.getKeyCode() == KeyEvent.VK_UP) {
@@ -146,26 +165,28 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             hHero.moveLeft();
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             hHero.moveRight();
+        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            cControle.quebrarBloco(eElementos, posicaoProjetada);
         } else if (e.getKeyCode() == KeyEvent.VK_R) {
-            Fase minhaFase = new Fase(100);
-            minhaFase.setFase1(hHero);
-            eElementos = minhaFase;
+            hHero.setVida(3);
+            faseAtual.setFase1(hHero);
+            eElementos = faseAtual;
             level = 1;
+            posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
+
         }
+        keyPosicaoProjetada(e);
 
         /*
          * Se o heroi for para uma posicao invalida, sobre um elemento intransponivel,
          * volta para onde estava
          */
-        if (!cControle.ehPosicaoValida(this.eElementos, hHero.getPosicao())) {
+        if (!cControle.ehPosicaoValida(this.eElementos, hHero.getPosicao(), posicaoProjetada)) {
             hHero.voltaAUltimaPosicao();
+            keyPosicaoProjetada(e);
         }
 
         this.setTitle("-> Cell: " + (hHero.getPosicao().getColuna()) + ", " + (hHero.getPosicao().getLinha()));
-    }
-
-    public boolean ehPosicaoValida(Posicao umaPosicao) {
-        return cControle.ehPosicaoValida(eElementos, umaPosicao);
     }
 
     public boolean ehPosicaoValidaRelativaAUmPersonagem(Elemento umPersonagem) {
@@ -189,7 +210,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
          * Se o heroi for para uma posicao invalida, sobre um elemento intransponivel,
          * volta para onde estava
          */
-        if (!cControle.ehPosicaoValida(this.eElementos, hHero.getPosicao())) {
+        if (!cControle.ehPosicaoValida(this.eElementos, hHero.getPosicao(), posicaoProjetada)) {
             hHero.voltaAUltimaPosicao();
         }
 
