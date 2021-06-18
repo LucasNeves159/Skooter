@@ -40,7 +40,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         /* O protagonista (heroi) necessariamente precisa estar na posicao 0 do array */
         hHero = new Hero("skooter_hero.png"); /* https://www.online-image-editor.com/ */
         faseAtual = new Fase(100);
-        faseAtual.setFase4(hHero);
+        faseAtual.setFase1(hHero);
         eElementos = faseAtual;
         level = 1;
         posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
@@ -103,7 +103,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 if (!this.eElementos.isEmpty()) {
                     ++level;
                 }
-                if (hHero.getVida() > 0 && level < 4) {
+                if (hHero.getVida() > 0 && level < 5) {
                     switch (level) {
                         case 1:
                             faseAtual.setFase1(hHero);
@@ -113,6 +113,9 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                             break;
                         case 3:
                             faseAtual.setFase3(hHero);
+                            break;
+                        case 4:
+                            faseAtual.setFase4(hHero);
                             break;
                     }
                     eElementos = faseAtual;
