@@ -20,7 +20,7 @@ public abstract class Elemento implements Serializable {
     protected boolean bQuebravel; /* Pode quebrar? */
     protected boolean bColetavel; /* Coletavel? */
     protected boolean bMovivel; /* Pode mover? */
-    protected boolean bEsteira; /* Eh uma esteira? */
+    protected boolean bEsteira; /* Empura outro objeto? */
 
     protected Elemento(String sNomeImagePNG) {
         this.pPosicao = new Posicao(1, 1);
