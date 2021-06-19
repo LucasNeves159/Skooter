@@ -40,18 +40,6 @@ public class ControleDeJogo {
         }
     }
 
-    // Verifica se é esteira e chama o método de mover objetos
-    // public void processaEsteiras(ArrayList<Elemento> e) {
-    // Esteira eTemp;
-
-    // for (int i = 0; i < e.size(); i++) {
-    // if (e.get(i).isbEsteira()) {
-    // eTemp = (Esteira) e.get(i);
-    // eTemp.arremessar(e);
-    // }
-    // }
-    // }
-
     private boolean ehPosicaoValidaMovivel(ArrayList<Elemento> e, Posicao newP) {
         Elemento eTemp;
         /* Validacao da posicao de todos os elementos com relacao a Posicao newP */
@@ -94,7 +82,7 @@ public class ControleDeJogo {
                 continue;
             if (eTemp.getPosicao().estaNaMesmaPosicao(umElemento.getPosicao()))
                 /*
-                * Esta gambiarra significa: "se o elemento de interesse for transponivel ou movivel,
+                * "se o elemento de interesse for transponivel ou movivel,
                 * i.e. Heroi (unico transponivel que se move) ou BlocoVerde (unico com bandeira movivel),
                 * e meu elemento testado for uma esteira, então retorna verdadeiro, do contrário, falso."
                 */
