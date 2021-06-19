@@ -18,7 +18,9 @@ public abstract class Elemento implements Serializable {
     protected boolean bTransponivel; /* Pode passar por cima? */
     protected boolean bMortal; /* Se encostar, morre? */
     protected boolean bQuebravel; /* Pode quebrar? */
+    protected boolean bColetavel; /* Coletavel? */
     protected boolean bMovivel; /* Pode mover? */
+    protected boolean bEsteira; /* Eh uma esteira? */
 
     protected Elemento(String sNomeImagePNG) {
         this.pPosicao = new Posicao(1, 1);
@@ -26,6 +28,20 @@ public abstract class Elemento implements Serializable {
         this.bMortal = false;
         this.bQuebravel = false;
         this.bMovivel = false;
+        this.bEsteira = false;
+        try {
+            iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + sNomeImagePNG);
+            Image img = iImage.getImage();
+            BufferedImage bi = new BufferedImage(Consts.CELL_SIDE, Consts.CELL_SIDE, BufferedImage.TYPE_INT_ARGB);
+            Graphics g = bi.createGraphics();
+            g.drawImage(img, 0, 0, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
+            iImage = new ImageIcon(bi);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public void setImage(String sNomeImagePNG) {
         try {
             iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + sNomeImagePNG);
             Image img = iImage.getImage();
@@ -54,8 +70,16 @@ public abstract class Elemento implements Serializable {
         return bQuebravel;
     }
 
+    public boolean isbColetavel() {
+        return bColetavel;
+    }
+
     public boolean isbMovivel() {
         return bMovivel;
+    }
+
+    public boolean isbEsteira() {
+        return bEsteira;
     }
 
     public void setbTransponivel(boolean bTransponivel) {

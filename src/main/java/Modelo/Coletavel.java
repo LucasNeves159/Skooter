@@ -7,5 +7,6 @@ public class Coletavel extends Elemento {
         super(sNomeImagePNG);
         this.setPosicao(umaPosicao);
         bTransponivel = true;
+        bColetavel = true;
     }
 }

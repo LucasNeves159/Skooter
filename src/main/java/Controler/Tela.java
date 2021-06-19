@@ -38,7 +38,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
         /* Cria eElementos adiciona elementos */
         /* O protagonista (heroi) necessariamente precisa estar na posicao 0 do array */
-        hHero = new Hero("skooter_hero.png"); /* https://www.online-image-editor.com/ */
+        hHero = new Hero("skooter_hero_down.png"); /* https://www.online-image-editor.com/ */
         faseAtual = new Fase(100);
         faseAtual.setFase1(hHero);
         eElementos = faseAtual;
@@ -99,7 +99,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         if (!this.eElementos.isEmpty() && hHero.getVida() > 0) {
             this.cControle.desenhaTudo(eElementos);
             this.cControle.processaTudo(eElementos);
-            this.cControle.processaEsteiras(eElementos);
+            // this.cControle.processaEsteiras(eElementos);
             if (!this.cControle.haColecionaveisAinda(eElementos)) {
                 if (!this.eElementos.isEmpty()) {
                     ++level;
@@ -163,16 +163,21 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         /* Movimento do heroi via teclado */
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             hHero.moveUp();
+            hHero.setImage("skooter_hero_up.png");
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             hHero.moveDown();
+            hHero.setImage("skooter_hero_down.png");
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             hHero.moveLeft();
+            hHero.setImage("skooter_hero_left.png");
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             hHero.moveRight();
+            hHero.setImage("skooter_hero_right.png");
         } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             cControle.quebrarBloco(eElementos, posicaoProjetada);
         } else if (e.getKeyCode() == KeyEvent.VK_R) {
             hHero.setVida(3);
+            hHero.setImage("skooter_hero_down.png");
             faseAtual.setFase1(hHero);
             eElementos = faseAtual;
             level = 1;
