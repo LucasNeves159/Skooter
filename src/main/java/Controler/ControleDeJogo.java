@@ -8,7 +8,11 @@ import java.util.ArrayList;
 
 public class ControleDeJogo {
     public void desenhaTudo(ArrayList<Elemento> e) {
-        for (int i = 0; i < e.size(); i++) {
+        /*
+         * for decrescente pra que o Herói seja o ultimo objeto desenhado
+         * mantendo-o sempre na tela
+        */
+        for (int i = e.size()-1; i >= 0; i--) {
             e.get(i).autoDesenho();
         }
     }
