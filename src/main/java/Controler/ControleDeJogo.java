@@ -34,6 +34,7 @@ public class ControleDeJogo {
                     e.remove(eTemp);
                 else if (eTemp.isbMortal()) {
                     hHero.setVida(hHero.getVida() - 1);
+                    System.out.println("Vidas restantes: "+hHero.getVida());
                     e.clear();
                 }
         }
