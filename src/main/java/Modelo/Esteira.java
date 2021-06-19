@@ -22,11 +22,11 @@ public class Esteira extends Elemento {
         return direcao;
     }
 
-    // socorrooo
+    // Mecânica da esteira
     public void arremessar(ArrayList<Elemento> e) {
         for (int i = 0; i < e.size(); i++) {
             if (e.get(i).getPosicao().estaNaMesmaPosicao(this.getPosicao())) {
-                // if (e.get(i).isbMovivel()) {
+                //se está em cima da esteira, joga o objeto pra direção apontada
                 switch (this.getDir()) {
                     case 0:
                         e.get(i).moveUp();
@@ -47,11 +47,11 @@ public class Esteira extends Elemento {
                     default:
                         break;
                 }
+                //Verifica se a posição jogada é válida e corrige caso não for
                 if (!Desenhador.getTelaDoJogo().ehPosicaoValidaRelativaAUmPersonagem(e.get(i))) {
                     e.get(i).getPosicao().volta();
                 }
                 break;
-                // }
             }
         }
     }
