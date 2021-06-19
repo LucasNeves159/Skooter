@@ -7,9 +7,8 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import java.util.logging.*;
-import java.util.zip.*;
 
-public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
+public class Tela extends javax.swing.JFrame implements KeyListener {
 
     private Hero hHero;
     private Fase faseAtual;
@@ -26,7 +25,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         Desenhador.setCenario(this); /* Desenhador funciona no modo estatico */
         initComponents();
 
-        this.addMouseListener(this); /* mouse */
         this.addKeyListener(this); /* teclado */
 
         /* Cria a janela do tamanho do cenario + insets (bordas) da janela */
@@ -44,20 +42,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         eElementos = faseAtual;
         level = 1;
         posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
-        /*
-         * this.addElemento(hHero); CoronaVirus cTeste = new
-         * CoronaVirus("robo_azul.png"); cTeste.setPosicao(5, 5);
-         * this.addElemento(cTeste);
-         * 
-         * CoronaVirus cCorona = new CoronaVirus("robo.png"); cCorona.setPosicao(3, 3);
-         * this.addElemento(cCorona);
-         * 
-         * CoronaVirus cRobo = new CoronaVirus("robo_azul.png"); cCorona.setPosicao(10,
-         * 5); this.addElemento(cRobo);
-         * 
-         * Caveira cCaveira = new Caveira("caveira.png"); cCaveira.setPosicao(10, 9);
-         * this.addElemento(cCaveira);
-         */
     }
 
     /*--------------------------------------------------*/
@@ -209,26 +193,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         return cControle;
     }
 
-    public void mousePressed(MouseEvent e) {
-        // Movimento via mouse
-        int x = e.getX();
-        int y = e.getY();
-
-        this.setTitle("X: " + x + ", Y: " + y + " -> Cell: " + (y / Consts.CELL_SIDE) + ", " + (x / Consts.CELL_SIDE));
-
-        this.hHero.getPosicao().setPosicao(y / Consts.CELL_SIDE, x / Consts.CELL_SIDE);
-
-        /*
-         * Se o heroi for para uma posicao invalida, sobre um elemento intransponivel,
-         * volta para onde estava
-         */
-        if (!cControle.ehPosicaoValida(this.eElementos, hHero.getPosicao(), posicaoProjetada)) {
-            hHero.voltaAUltimaPosicao();
-        }
-
-        repaint();
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -256,27 +220,11 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
      // Variables declaration - do not modify//GEN-BEGIN:variables
      // End of variables declaration//GEN-END:variables
 
-    public void mouseMoved(MouseEvent e) {
-    }
-
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    public void mouseReleased(MouseEvent e) {
-    }
-
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    public void mouseExited(MouseEvent e) {
-    }
-
-    public void mouseDragged(MouseEvent e) {
-    }
-
+    @Override
     public void keyTyped(KeyEvent e) {
     }
 
+    @Override
     public void keyReleased(KeyEvent e) {
     }
 }
