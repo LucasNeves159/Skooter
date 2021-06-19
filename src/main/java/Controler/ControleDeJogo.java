@@ -79,19 +79,21 @@ public class ControleDeJogo {
         }
         return true;
     }
-
+    
     public boolean ehPosicaoValidaRelativaAUmPersonagem(ArrayList<Elemento> e, Elemento umElemento) {
         Elemento eTemp;
-        /* Validacao da posicao de todos os elementos com relacao a Posicao p */
+        /* Validacao da posicao de todos os elementos com relacao a umElemento */
         for (int i = 1; i < e.size(); i++) { /* Olha todos os elementos */
             eTemp = e.get(i); /* Pega o i-esimo elemento do jogo */
             if (eTemp == umElemento)
                 continue;
             if (eTemp.getPosicao().estaNaMesmaPosicao(umElemento.getPosicao()))
                 /*
-                 * A posicao p é invalida, pois ha um elemento (i-esimo eTemp) intransponivel lá
-                 */
-                return false;
+                * Esta gambiarra significa: "se o elemento de interesse for transponivel ou movivel,
+                * i.e. Heroi (unico transponivel que se move) ou BlocoVerde (unico com bandeira movivel),
+                * e meu elemento testado for uma esteira, então retorna verdadeiro, do contrário, falso."
+                */
+                return eTemp.isbEsteira() && (umElemento.isbTransponivel() || umElemento.isbMovivel()); //testado apenas sem o bloco
         }
         return true;
     }
