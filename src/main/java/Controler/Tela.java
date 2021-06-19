@@ -122,6 +122,9 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                     eElementos = faseAtual;
                 } else
                     eElementos.clear();
+                    System.out.println("Fim de jogo\nObrigado por jogar o Skooter\n\n
+                                       Este Jogo foi feito pela dupla\nJonattan Willian da Silva\nLucas Silva Neves\n\n
+                                       Agradecimentos especiais ao prof. José Fernando Rodrigues Jr. pela extensa colaboração no desenvolvimento.");
             }
         }
 
