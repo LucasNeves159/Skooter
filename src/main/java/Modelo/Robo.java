@@ -6,6 +6,8 @@ import Auxiliar.Desenhador;
 import Auxiliar.Posicao;
 
 public class Robo extends Elemento {
+    // Construtor de robo que recebe um nome de imagem e uma posicao inicial
+    // Mata o heroi caso se choque com ele
     public Robo(String sNomeImagePNG, Posicao umaPosicao) {
         super(sNomeImagePNG);
         this.setPosicao(umaPosicao);
@@ -13,6 +15,7 @@ public class Robo extends Elemento {
         bMortal = true;
     }
 
+    // Move-se randomicamente
     public void autoDesenho() {
         Random r = new Random();
         int iDirecao = r.nextInt(4);

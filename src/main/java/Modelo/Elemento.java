@@ -2,7 +2,6 @@ package Modelo;
 
 import Auxiliar.Consts;
 import Auxiliar.Desenhador;
-import Controler.Tela;
 import Auxiliar.Posicao;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -22,7 +21,9 @@ public abstract class Elemento implements Serializable {
     protected boolean bMovivel; /* Pode mover? */
     protected boolean bEsteira; /* Empura outro objeto? */
 
+    // Construtor de elemento que recebe uma imagem a ser carregada
     protected Elemento(String sNomeImagePNG) {
+        // Inicializa uma posicao qualquer
         this.pPosicao = new Posicao(1, 1);
         this.bTransponivel = true;
         this.bMortal = false;
@@ -41,6 +42,7 @@ public abstract class Elemento implements Serializable {
         }
     }
 
+    // Funcao que recebe um nome de imagem para mudar a imagem do elemento
     public void setImage(String sNomeImagePNG) {
         try {
             iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + sNomeImagePNG);
@@ -54,6 +56,7 @@ public abstract class Elemento implements Serializable {
         }
     }
 
+    // Getters
     public Posicao getPosicao() {
         return pPosicao;
     }
@@ -82,6 +85,7 @@ public abstract class Elemento implements Serializable {
         return bEsteira;
     }
 
+    // Setters
     public void setbTransponivel(boolean bTransponivel) {
         this.bTransponivel = bTransponivel;
     }
@@ -94,6 +98,7 @@ public abstract class Elemento implements Serializable {
         return pPosicao.copia(umaPosicao);
     }
 
+    // Funcoes de movimento do elemento
     public boolean moveUp() {
         return this.pPosicao.moveUp();
     }
@@ -110,6 +115,7 @@ public abstract class Elemento implements Serializable {
         return this.pPosicao.moveLeft();
     }
 
+    // Funcao para printar o elemento na tela
     public void autoDesenho() {
         Desenhador.desenhar(this.iImage, pPosicao.getColuna(), pPosicao.getLinha());
     }

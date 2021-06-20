@@ -3,11 +3,12 @@ package Modelo;
 import Auxiliar.Posicao;
 
 public class QuadradoVerde extends Elemento {
+    // Construtor do quadrado verde que recebe uma posicao
+    // Nao eh movivel e pode ser quebrado
     public QuadradoVerde(Posicao umaPosicao) {
         super("quadradoVerde.png");
         this.setPosicao(umaPosicao);
         bTransponivel = false;
-        bMortal = false;
         bQuebravel = true;
     }
 }

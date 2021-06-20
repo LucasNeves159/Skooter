@@ -34,9 +34,10 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
         /* Este array vai guardar os elementos graficos */
         eElementos = new ArrayList<Elemento>(100);
 
-        /* Cria eElementos adiciona elementos */
+        /* Cria eElementos e adiciona elementos (Seta a fase 1) */
         /* O protagonista (heroi) necessariamente precisa estar na posicao 0 do array */
-        hHero = new Hero("skooter_hero_down.png"); /* https://www.online-image-editor.com/ */
+        /* Posicao projetada eh a posicao que o heroi esta "olhando" */
+        hHero = new Hero("skooter_hero_down.png");
         faseAtual = new Fase(100);
         faseAtual.setFase1(hHero);
         eElementos = faseAtual;
@@ -83,7 +84,9 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
         if (!this.eElementos.isEmpty() && hHero.getVida() > 0) {
             this.cControle.desenhaTudo(eElementos);
             this.cControle.processaTudo(eElementos);
-            // this.cControle.processaEsteiras(eElementos);
+            // Se nao houver mais coletaveis e a vida do heroi for maior que 0
+            // Avanca uma fase, caso a array de elementos for nao esteja vazio
+            // Caso contrario, reinicia a fase
             if (!this.cControle.haColecionaveisAinda(eElementos)) {
                 if (!this.eElementos.isEmpty()) {
                     ++level;
@@ -104,11 +107,19 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
                             break;
                     }
                     eElementos = faseAtual;
-                } else
+
+                    // Se as vidas estiverem acabadas ou apos a ultima fase
+                    // Mensagem final do jogo
+                } else {
                     eElementos.clear();
-                    System.out.println("Fim de jogo\nObrigado por jogar o Skooter\n\n
-                                       Este Jogo foi feito pela dupla\nJonattan Willian da Silva\nLucas Silva Neves\n\n
-                                       Agradecimentos especiais ao prof. José Fernando Rodrigues Jr. pela extensa colaboração no desenvolvimento.");
+                    System.out.println("Fim de jogo");
+                    System.out.println("Obrigado por jogar o Skooter");
+                    System.out.println("Este Jogo foi feito pela dupla:");
+                    System.out.println("Jonattan Willian");
+                    System.out.println("Lucas Silva Neves");
+                    System.out.println(
+                            "Agradecimentos especiais ao prof. José Fernando Rodrigues Jr. pela extensa colaboração no desenvolvimento.");
+                }
             }
         }
 
@@ -134,6 +145,8 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
         timer.schedule(redesenhar, 0, Consts.FRAME_INTERVAL);
     }
 
+    // Funcao responsavel por calcular a posicao do objeto que o heroi esta olhando
+    // com base na tecla pressionada
     private void keyPosicaoProjetada(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() - 1, hHero.getPosicao().getColuna());
@@ -148,6 +161,8 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
 
     public void keyPressed(KeyEvent e) {
         /* Movimento do heroi via teclado */
+        // A depender do movimento, o heroi carrega uma nova imagem para "simular" sua
+        // animacao
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             hHero.moveUp();
             hHero.setImage("skooter_hero_up.png");
@@ -171,6 +186,7 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
             posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
 
         }
+        // calcula nova posicao projetada
         keyPosicaoProjetada(e);
 
         /*

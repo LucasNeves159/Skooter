@@ -9,10 +9,10 @@ import java.util.ArrayList;
 public class ControleDeJogo {
     public void desenhaTudo(ArrayList<Elemento> e) {
         /*
-         * for decrescente pra que o Herói seja o ultimo objeto desenhado
-         * mantendo-o sempre na tela
-        */
-        for (int i = e.size()-1; i >= 0; i--) {
+         * for decrescente pra que o Herói seja o ultimo objeto desenhado mantendo-o
+         * sempre na tela
+         */
+        for (int i = e.size() - 1; i >= 0; i--) {
             e.get(i).autoDesenho();
         }
     }
@@ -27,14 +27,18 @@ public class ControleDeJogo {
             /* Verifica se o heroi se sobrepoe ao i-ésimo elemento */
             if (hHero.getPosicao().estaNaMesmaPosicao(eTemp.getPosicao()))
                 /* Nem todos os elementos podem ser transpostos pelo heroi */
-                if (eTemp.isbEsteira()) {
+                if (eTemp.isbEsteira()) { /* Se for uma esteira, arremessa o heroi */
                     estTemp = (Esteira) eTemp;
                     estTemp.arremessar(e);
+
+                    // Se for um objeto transponivel, remove do array
                 } else if (eTemp.isbTransponivel())
                     e.remove(eTemp);
+
+                // Se for um robo (mortal), tira uma vida do heroi
                 else if (eTemp.isbMortal()) {
                     hHero.setVida(hHero.getVida() - 1);
-                    System.out.println("Vidas restantes: "+hHero.getVida());
+                    System.out.println("Vidas restantes: " + hHero.getVida());
                     e.clear();
                 }
         }
@@ -45,6 +49,7 @@ public class ControleDeJogo {
         /* Validacao da posicao de todos os elementos com relacao a Posicao newP */
         for (int i = 1; i < e.size(); i++) { /* Olha todos os elementos */
             eTemp = e.get(i); /* Pega o i-esimo elemento do jogo */
+            // Verifica se a posicao seguinte do bloco a ser movimentada eh valida
             if (eTemp.getPosicao().estaNaMesmaPosicao(newP))
                 return false;
         }
@@ -56,9 +61,13 @@ public class ControleDeJogo {
         /* Validacao da posicao de todos os elementos com relacao a Posicao p */
         for (int i = 1; i < e.size(); i++) { /* Olha todos os elementos */
             eTemp = e.get(i); /* Pega o i-esimo elemento do jogo */
+            // Se nao for transponivel, volta para o loop
             if (!eTemp.isbTransponivel())
+                // Se for transponivel e esta na mesma posicao que p
+                // Se for movivel e se a proxima posicao for valida
                 if (eTemp.getPosicao().estaNaMesmaPosicao(p))
                     if (eTemp.isbMovivel()) {
+                        // Seta a posicao do elemento para a proxima posicao
                         if (ehPosicaoValidaMovivel(e, newP) && eTemp.setPosicao(newP))
                             return true;
                         else
@@ -72,7 +81,7 @@ public class ControleDeJogo {
         }
         return true;
     }
-    
+
     public boolean ehPosicaoValidaRelativaAUmPersonagem(ArrayList<Elemento> e, Elemento umElemento) {
         Elemento eTemp;
         /* Validacao da posicao de todos os elementos com relacao a umElemento */
@@ -82,17 +91,21 @@ public class ControleDeJogo {
                 continue;
             if (eTemp.getPosicao().estaNaMesmaPosicao(umElemento.getPosicao()))
                 /*
-                * "se o elemento de interesse for transponivel ou movivel,
-                * i.e. Heroi (unico transponivel que se move) ou BlocoVerde (unico com bandeira movivel),
-                * e meu elemento testado for uma esteira, então retorna verdadeiro, do contrário, falso."
-                */
-                return eTemp.isbEsteira() && (umElemento.isbTransponivel() || umElemento.isbMovivel()); //testado apenas sem o bloco
+                 * "se o elemento de interesse for transponivel ou movivel, i.e. Heroi (unico
+                 * transponivel que se move) ou BlocoVerde (unico com bandeira movivel), e meu
+                 * elemento testado for uma esteira, então retorna verdadeiro, do contrário,
+                 * falso."
+                 */
+                return eTemp.isbEsteira() && (umElemento.isbTransponivel() || umElemento.isbMovivel()); // testado
+                                                                                                        // apenas sem o
+                                                                                                        // bloco
         }
         return true;
     }
 
     public boolean haColecionaveisAinda(ArrayList<Elemento> e) {
         for (int i = 1; i < e.size(); i++) { /* Olha todos os elementos */
+            // Se for um colecionavel, retorna true
             if (e.get(i).isbColetavel())
                 return true;
         }
@@ -100,9 +113,12 @@ public class ControleDeJogo {
     }
 
     public boolean quebrarBloco(ArrayList<Elemento> e, Posicao projecao) {
-        for (int i = 0; i < e.size(); i++) {
+        for (int i = 0; i < e.size(); i++) { /* Olha todos os elementos */
+            // Se o heroi estiver "olhando" para o bloco
             if (e.get(i).getPosicao().estaNaMesmaPosicao(projecao)) {
+                // Se este for verde (quebravel)
                 if (e.get(i).isbQuebravel()) {
+                    // Remove do array
                     e.remove(i);
                     return true;
                 }

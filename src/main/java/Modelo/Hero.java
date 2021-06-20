@@ -1,31 +1,26 @@
 package Modelo;
 
-import Auxiliar.Consts;
-import Auxiliar.Desenhador;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.io.IOException;
-import java.io.Serializable;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-public class Hero extends Elemento implements Serializable {
+public class Hero extends Elemento {
     private int vida;
 
+    // Constructor que recebe um nome de imagem para o heroi
     public Hero(String sNomeImagePNG) {
         super(sNomeImagePNG);
+        // Vida inicial = 3
         vida = 3;
     }
 
+    // Funcao para voltar a ultima posicao, caso a atual nao seja valida
     public void voltaAUltimaPosicao() {
         this.pPosicao.volta();
     }
 
+    // Getter de vida
     public int getVida() {
         return vida;
     }
 
+    // Setter de vida
     public void setVida(int iVida) {
         vida = iVida;
     }

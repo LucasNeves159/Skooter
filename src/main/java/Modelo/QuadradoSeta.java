@@ -2,9 +2,8 @@ package Modelo;
 
 import Auxiliar.Desenhador;
 import Auxiliar.Posicao;
-import java.io.Serializable;
 
-public class QuadradoSeta extends Elemento implements Serializable {
+public class QuadradoSeta extends Elemento {
     private final int direcao;
 
     public QuadradoSeta(int dir, String sNomeImagePNG, Posicao umaPosicao) {
@@ -12,14 +11,14 @@ public class QuadradoSeta extends Elemento implements Serializable {
         direcao = dir;
         this.bTransponivel = false;
     }
-    
-    public int getDir(){
+
+    public int getDir() {
         return direcao;
     }
 
     @Override
     public void autoDesenho() {
-        switch(this.getDir()) {
+        switch (this.getDir()) {
             case 0:
                 this.moveUp();
                 break;
@@ -38,13 +37,12 @@ public class QuadradoSeta extends Elemento implements Serializable {
 
             default:
                 break;
-            }
-        
-            if (!Desenhador.getTelaDoJogo().ehPosicaoValidaRelativaAUmPersonagem(this)) {
-                this.getPosicao().volta();
-            }
+        }
+
+        if (!Desenhador.getTelaDoJogo().ehPosicaoValidaRelativaAUmPersonagem(this)) {
+            this.getPosicao().volta();
+        }
 
         super.autoDesenho();
     }
 }
-
