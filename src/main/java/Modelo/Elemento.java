@@ -20,6 +20,7 @@ public abstract class Elemento implements Serializable {
     protected boolean bColetavel; /* Coletavel? */
     protected boolean bMovivel; /* Pode mover? */
     protected boolean bEsteira; /* Empura outro objeto? */
+    protected boolean bPowerUp; /* Libera PowerUp? */
 
     // Construtor de elemento que recebe uma imagem a ser carregada
     protected Elemento(String sNomeImagePNG) {
@@ -30,6 +31,7 @@ public abstract class Elemento implements Serializable {
         this.bQuebravel = false;
         this.bMovivel = false;
         this.bEsteira = false;
+        this.bPowerUp = false;
         try {
             iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + sNomeImagePNG);
             Image img = iImage.getImage();
@@ -83,6 +85,10 @@ public abstract class Elemento implements Serializable {
 
     public boolean isbEsteira() {
         return bEsteira;
+    }
+
+    public boolean isbPowerUp() {
+        return bPowerUp;
     }
 
     // Setters

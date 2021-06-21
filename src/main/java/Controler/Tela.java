@@ -107,6 +107,8 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
                             faseAtual.setFase4(hHero);
                             break;
                     }
+                    hHero.setImage("skooter_hero_down.png");
+                    posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
                     eElementos = faseAtual;
 
                     // Se as vidas estiverem acabadas ou apos a ultima fase
@@ -175,28 +177,32 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
         // animacao
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
+                // "Seta cima" Movei para cima
                 hHero.moveUp();
                 hHero.setImage("skooter_hero_up.png");
                 break;
             case KeyEvent.VK_DOWN:
+                // "Seta baixo" Movei para Baixo
                 hHero.moveDown();
                 hHero.setImage("skooter_hero_down.png");
                 break;
             case KeyEvent.VK_LEFT:
+                // "Seta esquerda" Movei para esquerda
                 hHero.moveLeft();
                 hHero.setImage("skooter_hero_left.png");
                 break;
             case KeyEvent.VK_RIGHT:
+                // "Seta direita" Movei para direita
                 hHero.moveRight();
                 hHero.setImage("skooter_hero_right.png");
                 break;
             case KeyEvent.VK_SPACE:
+                // "ESPACO" quebra o bloco que heroi esta olhando
                 cControle.quebrarBloco(eElementos, posicaoProjetada);
                 break;
             case KeyEvent.VK_R:
                 // "R" reinicia o jogo
                 hHero.setVida(3);
-                cControle.powerUp = true;
                 hHero.setImage("skooter_hero_down.png");
                 faseAtual.setFase1(hHero);
                 eElementos = faseAtual;

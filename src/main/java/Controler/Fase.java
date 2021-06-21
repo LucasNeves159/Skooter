@@ -66,7 +66,7 @@ public class Fase extends ArrayList<Elemento> {
         this.add(new QuadradoVerdeLosango(new Posicao(7, 10)));
         this.add(new QuadradoVerdeLosango(new Posicao(8, 3)));
         this.add(new QuadradoVerdeLosango(new Posicao(8, 9)));
-        this.add(new QuadradoVerdeLosango(new Posicao(9, 0)));
+        this.add(new QuadradoVerdeLosango(new Posicao(9, 0), true));
         this.add(new QuadradoVerdeLosango(new Posicao(9, 2)));
         this.add(new QuadradoVerdeLosango(new Posicao(9, 6)));
         this.add(new QuadradoVerdeLosango(new Posicao(9, 8)));

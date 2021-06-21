@@ -12,4 +12,13 @@ public class QuadradoVerdeLosango extends Elemento {
         bQuebravel = true;
         bMovivel = true;
     }
+
+    // Mesmo construtor so que quando quebrado libera o powerUp
+    public QuadradoVerdeLosango(Posicao umaPosicao, boolean powerUp) {
+        super("quadradoVerdeLosango.png");
+        this.setPosicao(umaPosicao);
+        bTransponivel = false;
+        bQuebravel = true;
+        bPowerUp = powerUp;
+    }
 }

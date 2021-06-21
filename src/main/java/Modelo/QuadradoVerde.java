@@ -11,4 +11,13 @@ public class QuadradoVerde extends Elemento {
         bTransponivel = false;
         bQuebravel = true;
     }
+
+    // Mesmo construtor so que quando quebrado libera o powerUp
+    public QuadradoVerde(Posicao umaPosicao, boolean powerUp) {
+        super("quadradoVerde.png");
+        this.setPosicao(umaPosicao);
+        bTransponivel = false;
+        bQuebravel = true;
+        bPowerUp = powerUp;
+    }
 }

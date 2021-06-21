@@ -9,5 +9,4 @@ public class Coracao extends Robo {
         bTransponivel = true;
         bMortal = false;
     }
-    
 }

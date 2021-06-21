@@ -5,8 +5,7 @@ import Auxiliar.Posicao;
 import java.util.ArrayList;
 
 public class ControleDeJogo {
-    public boolean powerUp = true;
-    
+
     public void desenhaTudo(ArrayList<Elemento> e) {
         /*
          * for decrescente pra que o Herói seja o ultimo objeto desenhado mantendo-o
@@ -31,23 +30,8 @@ public class ControleDeJogo {
                     estTemp = (Esteira) eTemp;
                     estTemp.arremessar(e);
 
-                // Se for um objeto transponivel, remove do array
+                    // Se for um objeto transponivel, remove do array
                 } else if (eTemp.isbTransponivel()) {
-                    // caso ele seja um PowerUp, a execução começa daqui
-                    if (powerUp && !eTemp.isbColetavel()) {
-                        hHero.setVida(hHero.getVida() + 1); //vida +1
-                        powerUp = false; //nunca mais entra nesse loop
-                        //procura cada robo na tela
-                        for (int j = 1; j < e.size(); j++) {
-                            eTemp = e.get(j);
-                            if (eTemp.isbMortal()) {
-                                // aplica a vulnerabilidade
-                                Robo tecoteco = (Robo) eTemp;  
-                                tecoteco.ligaVulneravel();
-                            }
-                        }
-                        System.out.println("GodMode por 6 segundos!");
-                    }
                     eTemp = e.get(i);
                     e.remove(eTemp);
                 }
@@ -55,7 +39,6 @@ public class ControleDeJogo {
                 // Se for um robo (mortal), tira uma vida do heroi
                 else if (eTemp.isbMortal()) {
                     hHero.setVida(hHero.getVida() - 1);
-                    powerUp = true;
                     System.out.println("Vidas restantes: " + hHero.getVida());
                     e.clear();
                 }
@@ -106,14 +89,13 @@ public class ControleDeJogo {
                 continue;
             if (eTemp.getPosicao().estaNaMesmaPosicao(umElemento.getPosicao()))
                 /*
-                 * "se o elemento de interesse for transponivel ou movivel, i.e. Heroi, Vida
-                 * ou BlocoVerde (unico com bandeira movivel), e meu
-                 * elemento testado for uma esteira, então retorna verdadeiro, do contrário,
-                 * falso."
+                 * "se o elemento de interesse for transponivel ou movivel, i.e. Heroi, Vida ou
+                 * BlocoVerde (unico com bandeira movivel), e meu elemento testado for uma
+                 * esteira, então retorna verdadeiro, do contrário, falso."
                  */
                 return eTemp.isbEsteira() && (umElemento.isbTransponivel() || umElemento.isbMovivel()); // testado
-                // robôs vulneraveis sobem em esteiras                                                  // apenas sem o
-                                                                                                        // bloco
+            // robôs vulneraveis sobem em esteiras // apenas sem o
+            // bloco
         }
         return true;
     }
@@ -128,14 +110,32 @@ public class ControleDeJogo {
     }
 
     public boolean quebrarBloco(ArrayList<Elemento> e, Posicao projecao) {
-        for (int i = 0; i < e.size(); i++) { /* Olha todos os elementos */
+        Hero hHero = (Hero) e.get(0);
+        for (int i = 1; i < e.size(); i++) { /* Olha todos os elementos */
             // Se o heroi estiver "olhando" para o bloco
             if (e.get(i).getPosicao().estaNaMesmaPosicao(projecao)) {
                 // Se este for verde (quebravel)
                 if (e.get(i).isbQuebravel()) {
-                    // Remove do array
-                    e.remove(i);
-                    return true;
+                    // caso ele seja um PowerUp, a execução começa daqui
+                    if (e.get(i).isbPowerUp()) {
+                        hHero.setVida(hHero.getVida() + 1); // vida +1
+                        // procura cada robo na tela
+                        for (int j = 1; j < e.size(); j++) {
+                            if (e.get(j).isbMortal()) {
+                                // aplica a vulnerabilidade
+                                Robo tecoteco = (Robo) e.get(j);
+                                tecoteco.ligaVulneravel();
+                            }
+                        }
+                        System.out.println("GodMode por 6 segundos!");
+                        e.add(1, new Coracao(e.get(i).getPosicao()));
+                        e.remove(i + 1);
+                        return true;
+                    } else {
+                        // Remove do array
+                        e.remove(i);
+                        return true;
+                    }
                 }
             }
         }
