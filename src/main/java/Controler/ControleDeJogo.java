@@ -1,12 +1,12 @@
 package Controler;
 
-import Modelo.Elemento;
-import Modelo.Esteira;
-import Modelo.Hero;
+import Modelo.*;
 import Auxiliar.Posicao;
 import java.util.ArrayList;
 
 public class ControleDeJogo {
+    public boolean powerUp = true;
+    
     public void desenhaTudo(ArrayList<Elemento> e) {
         /*
          * for decrescente pra que o Herói seja o ultimo objeto desenhado mantendo-o
@@ -31,13 +31,31 @@ public class ControleDeJogo {
                     estTemp = (Esteira) eTemp;
                     estTemp.arremessar(e);
 
-                    // Se for um objeto transponivel, remove do array
-                } else if (eTemp.isbTransponivel())
+                // Se for um objeto transponivel, remove do array
+                } else if (eTemp.isbTransponivel()) {
+                    // caso ele seja um PowerUp, a execução começa daqui
+                    if (powerUp && !eTemp.isbColetavel()) {
+                        hHero.setVida(hHero.getVida() + 1); //vida +1
+                        powerUp = false; //nunca mais entra nesse loop
+                        //procura cada robo na tela
+                        for (int j = 1; j < e.size(); j++) {
+                            eTemp = e.get(j);
+                            if (eTemp.isbMortal()) {
+                                // aplica a vulnerabilidade
+                                Robo tecoteco = (Robo) eTemp;  
+                                tecoteco.ligaVulneravel();
+                            }
+                        }
+                        System.out.println("GodMode por 6 segundos!");
+                    }
+                    eTemp = e.get(i);
                     e.remove(eTemp);
+                }
 
                 // Se for um robo (mortal), tira uma vida do heroi
                 else if (eTemp.isbMortal()) {
                     hHero.setVida(hHero.getVida() - 1);
+                    powerUp = true;
                     System.out.println("Vidas restantes: " + hHero.getVida());
                     e.clear();
                 }
@@ -68,10 +86,7 @@ public class ControleDeJogo {
                 if (eTemp.getPosicao().estaNaMesmaPosicao(p))
                     if (eTemp.isbMovivel()) {
                         // Seta a posicao do elemento para a proxima posicao
-                        if (ehPosicaoValidaMovivel(e, newP) && eTemp.setPosicao(newP))
-                            return true;
-                        else
-                            return false;
+                        return ehPosicaoValidaMovivel(e, newP) && eTemp.setPosicao(newP);
                     }
                     /*
                      * A posicao p é invalida, pois ha um elemento (i-esimo eTemp) intransponivel lá
@@ -91,13 +106,13 @@ public class ControleDeJogo {
                 continue;
             if (eTemp.getPosicao().estaNaMesmaPosicao(umElemento.getPosicao()))
                 /*
-                 * "se o elemento de interesse for transponivel ou movivel, i.e. Heroi (unico
-                 * transponivel que se move) ou BlocoVerde (unico com bandeira movivel), e meu
+                 * "se o elemento de interesse for transponivel ou movivel, i.e. Heroi, Vida
+                 * ou BlocoVerde (unico com bandeira movivel), e meu
                  * elemento testado for uma esteira, então retorna verdadeiro, do contrário,
                  * falso."
                  */
                 return eTemp.isbEsteira() && (umElemento.isbTransponivel() || umElemento.isbMovivel()); // testado
-                                                                                                        // apenas sem o
+                // robôs vulneraveis sobem em esteiras                                                  // apenas sem o
                                                                                                         // bloco
         }
         return true;
