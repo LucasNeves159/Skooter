@@ -59,6 +59,7 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
     }
 
     /* Este metodo eh executado a cada Consts.FRAME_INTERVAL milissegundos */
+    @Override
     public void paint(Graphics gOld) {
         Graphics g = this.getBufferStrategy().getDrawGraphics();
         /* Criamos um contexto gráfico */
@@ -132,6 +133,7 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
 
     public void go() {
         TimerTask redesenhar = new TimerTask() {
+            @Override
             public void run() {
                 repaint(); /* (executa o metodo paint) */
             }
@@ -148,43 +150,61 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
     // Funcao responsavel por calcular a posicao do objeto que o heroi esta olhando
     // com base na tecla pressionada
     private void keyPosicaoProjetada(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() - 1, hHero.getPosicao().getColuna());
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            posicaoProjetada.setProjecao(hHero.getPosicao().getLinha(), hHero.getPosicao().getColuna() - 1);
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            posicaoProjetada.setProjecao(hHero.getPosicao().getLinha(), hHero.getPosicao().getColuna() + 1);
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_UP:
+                posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() - 1, hHero.getPosicao().getColuna());
+                break;
+            case KeyEvent.VK_DOWN:
+                posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
+                break;
+            case KeyEvent.VK_LEFT:
+                posicaoProjetada.setProjecao(hHero.getPosicao().getLinha(), hHero.getPosicao().getColuna() - 1);
+                break;
+            case KeyEvent.VK_RIGHT:
+                posicaoProjetada.setProjecao(hHero.getPosicao().getLinha(), hHero.getPosicao().getColuna() + 1);
+                break;
+            default:
+                break;
         }
     }
 
+    @Override
     public void keyPressed(KeyEvent e) {
         /* Movimento do heroi via teclado */
         // A depender do movimento, o heroi carrega uma nova imagem para "simular" sua
         // animacao
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            hHero.moveUp();
-            hHero.setImage("skooter_hero_up.png");
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            hHero.moveDown();
-            hHero.setImage("skooter_hero_down.png");
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            hHero.moveLeft();
-            hHero.setImage("skooter_hero_left.png");
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            hHero.moveRight();
-            hHero.setImage("skooter_hero_right.png");
-        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            cControle.quebrarBloco(eElementos, posicaoProjetada);
-        } else if (e.getKeyCode() == KeyEvent.VK_R) {
-            hHero.setVida(3);
-            hHero.setImage("skooter_hero_down.png");
-            faseAtual.setFase1(hHero);
-            eElementos = faseAtual;
-            level = 1;
-            posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
-
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_UP:
+                hHero.moveUp();
+                hHero.setImage("skooter_hero_up.png");
+                break;
+            case KeyEvent.VK_DOWN:
+                hHero.moveDown();
+                hHero.setImage("skooter_hero_down.png");
+                break;
+            case KeyEvent.VK_LEFT:
+                hHero.moveLeft();
+                hHero.setImage("skooter_hero_left.png");
+                break;
+            case KeyEvent.VK_RIGHT:
+                hHero.moveRight();
+                hHero.setImage("skooter_hero_right.png");
+                break;
+            case KeyEvent.VK_SPACE:
+                cControle.quebrarBloco(eElementos, posicaoProjetada);
+                break;
+            case KeyEvent.VK_R:
+                // "R" reinicia o jogo
+                hHero.setVida(3);
+                cControle.powerUp = true;
+                hHero.setImage("skooter_hero_down.png");
+                faseAtual.setFase1(hHero);
+                eElementos = faseAtual;
+                level = 1;
+                posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
+                break;
+            default:
+                break;
         }
         // calcula nova posicao projetada
         keyPosicaoProjetada(e);
