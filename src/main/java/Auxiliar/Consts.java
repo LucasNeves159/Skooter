@@ -11,6 +11,7 @@ public class Consts {
     public static final int TIMER_DISPARO = 20; /* Em numero de frames (redesenhos) */
     public static final String PATH = File.separator + "imgs" + File.separator;
     public static final String SAVEPATH = File.separator + "save" + File.separator;
+    public static final String OBJETOPATH = File.separator + "objeto" + File.separator;
     // Tempo do autoSave em segundos
     public static int AUTOSAVEINTERVAL = 10;
 }

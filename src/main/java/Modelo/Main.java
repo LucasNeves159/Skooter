@@ -10,6 +10,7 @@ public class Main {
 
     // Factory = FactoryElemento.java
     // Bridge = SaveLoad.java
+    // Proxy = ReplaceElement package
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

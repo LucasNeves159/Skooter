@@ -1,6 +1,7 @@
 package Controler;
 
 import Modelo.*;
+import ReplaceElement.ObjetoProxy;
 import Auxiliar.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -8,7 +9,10 @@ import java.io.*;
 import java.util.*;
 import java.util.logging.*;
 
-public class Tela extends javax.swing.JFrame implements KeyListener {
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
 
     private Hero hHero;
     private Fase faseAtual;
@@ -26,6 +30,7 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
         Desenhador.setCenario(this); /* Desenhador funciona no modo estatico */
         initComponents();
 
+        this.addMouseListener(this); /* mouse */
         this.addKeyListener(this); /* teclado */
 
         /* Cria a janela do tamanho do cenario + insets (bordas) da janela */
@@ -359,5 +364,71 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public int getElement(Posicao posicao) {
+        for (int i = 1; i < eElementos.size(); i++) {
+            if (eElementos.get(i).getPosicao().estaNaMesmaPosicao(posicao)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if (e.getButton() == 3) {
+
+            int x = e.getX();
+            int y = e.getY();
+
+            int index = getElement(new Posicao(x / Consts.CELL_SIDE, y / Consts.CELL_SIDE));
+            System.out.println(y);
+
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Selecione um .obj.gz dentro da pasta objetos",
+                    "gz");
+            chooser.setFileFilter(filter);
+            try {
+                chooser.setCurrentDirectory(new File(new File(".").getCanonicalPath() + Consts.OBJETOPATH));
+            } catch (Exception exc) {
+                System.out.println("Pasta \"objeto\" não existe");
+            }
+
+            int retorno = chooser.showOpenDialog(this);
+            if (retorno == JFileChooser.APPROVE_OPTION) {
+                if (index != -1) {
+                    eElementos.remove(index);
+                    eElementos.add(index, new ObjetoProxy(chooser.getSelectedFile().getName())
+                            .exibeObjeto(new Posicao(x / Consts.CELL_SIDE, y / Consts.CELL_SIDE)));
+                } else
+                    eElementos.add(new ObjetoProxy(chooser.getSelectedFile().getName())
+                            .exibeObjeto(new Posicao(x / Consts.CELL_SIDE, y / Consts.CELL_SIDE)));
+            }
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // TODO Auto-generated method stub
+
     }
 }
