@@ -388,8 +388,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             int x = e.getX();
             int y = e.getY();
 
-            int index = getElement(new Posicao(x / Consts.CELL_SIDE, y / Consts.CELL_SIDE));
-            System.out.println(y);
+            int index = getElement(new Posicao(y / Consts.CELL_SIDE, x / Consts.CELL_SIDE));
+            System.out.println(y + " " + x);
 
             JFileChooser chooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter("Selecione um .obj.gz dentro da pasta objetos",
@@ -406,10 +406,10 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 if (index != -1) {
                     eElementos.remove(index);
                     eElementos.add(index, new ObjetoProxy(chooser.getSelectedFile().getName())
-                            .exibeObjeto(new Posicao(x / Consts.CELL_SIDE, y / Consts.CELL_SIDE)));
+                            .exibeObjeto(new Posicao(y / Consts.CELL_SIDE, x / Consts.CELL_SIDE)));
                 } else
                     eElementos.add(new ObjetoProxy(chooser.getSelectedFile().getName())
-                            .exibeObjeto(new Posicao(x / Consts.CELL_SIDE, y / Consts.CELL_SIDE)));
+                            .exibeObjeto(new Posicao(y / Consts.CELL_SIDE, x / Consts.CELL_SIDE)));
             }
         }
     }
