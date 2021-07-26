@@ -387,9 +387,11 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
             int x = e.getX();
             int y = e.getY();
+            x -= getInsets().left;
+            y -= getInsets().top;
 
             int index = getElement(new Posicao(y / Consts.CELL_SIDE, x / Consts.CELL_SIDE));
-            System.out.println(y + " " + x);
+            System.out.println(y - getInsets().top + " " + x);
 
             JFileChooser chooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter("Selecione um .obj.gz dentro da pasta objetos",
