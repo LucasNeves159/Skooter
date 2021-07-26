@@ -12,11 +12,12 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
 
     private Hero hHero;
     private Fase faseAtual;
-    private int level;
+    private int level = 0;
     private Posicao posicaoProjetada = new Posicao(0, 0);
     private ArrayList<Elemento> eElementos;
     private ControleDeJogo cControle = new ControleDeJogo();
     private Graphics g2;
+    private SaveLoad autoSave;
 
     /**
      * Creates new form
@@ -33,16 +34,26 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
 
         /* Este array vai guardar os elementos graficos */
         eElementos = new ArrayList<Elemento>(100);
+        faseAtual = new Fase(100);
 
         /* Cria eElementos e adiciona elementos (Seta a fase 1) */
         /* O protagonista (heroi) necessariamente precisa estar na posicao 0 do array */
         /* Posicao projetada eh a posicao que o heroi esta "olhando" */
-        hHero = new Hero("skooter_hero_down.png");
-        faseAtual = new Fase(100);
-        faseAtual.setFase1(hHero);
-        eElementos = faseAtual;
-        level = 1;
+        try {
+            SaveLoad loadGame = new SaveLoad(this);
+            loadGame.execute(new LoadFunction());
+            hHero = (Hero) eElementos.get(0);
+        } catch (Exception e) {
+            hHero = new Hero("skooter_hero_down.png");
+            faseAtual.setFase1(hHero);
+            eElementos = faseAtual;
+            level = 1;
+        }
         posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
+        System.out.println("Seu personagem começa com " + hHero.getVida() + " vidas");
+        System.out.println("Boa sorte!");
+        autoSave = new SaveLoad(this);
+        autoSave.start();
     }
 
     /*--------------------------------------------------*/
@@ -56,6 +67,22 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
 
     public Graphics getGraphicsBuffer() {
         return g2;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int i) {
+        level = i;
+    }
+
+    public void setElementos(ArrayList<Elemento> array) {
+        eElementos = array;
+    }
+
+    public ArrayList<Elemento> getElementos() {
+        return eElementos;
     }
 
     /* Este metodo eh executado a cada Consts.FRAME_INTERVAL milissegundos */
@@ -93,20 +120,7 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
                     ++level;
                 }
                 if (hHero.getVida() > 0 && level < 5) {
-                    switch (level) {
-                        case 1:
-                            faseAtual.setFase1(hHero);
-                            break;
-                        case 2:
-                            faseAtual.setFase2(hHero);
-                            break;
-                        case 3:
-                            faseAtual.setFase3(hHero);
-                            break;
-                        case 4:
-                            faseAtual.setFase4(hHero);
-                            break;
-                    }
+                    nextLevel();
                     hHero.setImage("skooter_hero_down.png");
                     posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
                     eElementos = faseAtual;
@@ -131,6 +145,26 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
         if (!getBufferStrategy().contentsLost()) {
             getBufferStrategy().show();
         }
+    }
+
+    private void nextLevel() {
+        switch (level) {
+            case 1:
+                faseAtual.setFase1(hHero);
+                break;
+            case 2:
+                faseAtual.setFase2(hHero);
+                break;
+            case 3:
+                faseAtual.setFase3(hHero);
+                break;
+            case 4:
+                faseAtual.setFase4(hHero);
+                break;
+        }
+        hHero.setImage("skooter_hero_down.png");
+        posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
+        eElementos = faseAtual;
     }
 
     public void go() {
@@ -208,6 +242,63 @@ public class Tela extends javax.swing.JFrame implements KeyListener {
                 eElementos = faseAtual;
                 level = 1;
                 posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
+                break;
+            case KeyEvent.VK_0:
+                // "1" seta autoSaveInterval = 7
+                Consts.AUTOSAVEINTERVAL = 0;
+                break;
+            case KeyEvent.VK_1:
+                // "1" seta autoSaveInterval = 7
+                Consts.AUTOSAVEINTERVAL = 7;
+                autoSave = new SaveLoad(this);
+                autoSave.start();
+                break;
+            case KeyEvent.VK_2:
+                // "1" seta autoSaveInterval = 7
+                Consts.AUTOSAVEINTERVAL = 10;
+                autoSave = new SaveLoad(this);
+                autoSave.start();
+                break;
+            case KeyEvent.VK_3:
+                // "1" seta autoSaveInterval = 7
+                Consts.AUTOSAVEINTERVAL = 15;
+                autoSave = new SaveLoad(this);
+                autoSave.start();
+                break;
+            case KeyEvent.VK_N:
+                // "N" passa para a prox fase
+                if (level < 4) {
+                    level++;
+                    nextLevel();
+                }
+                break;
+            case KeyEvent.VK_B:
+                // "M" volta uma fase
+                if (level > 1) {
+                    level--;
+                    nextLevel();
+                }
+                break;
+            case KeyEvent.VK_S:
+                // "S" salva o jogo
+                SaveLoad saveGame = new SaveLoad(this);
+                saveGame.execute(new SaveFunction());
+                break;
+            case KeyEvent.VK_L:
+                // "L" carrega um jogo salvo
+                ArrayList<Elemento> aux = eElementos;
+                int auxLevel = level;
+                try {
+                    SaveLoad loadGame = new SaveLoad(this);
+                    loadGame.execute(new LoadFunction());
+                    hHero = (Hero) eElementos.get(0);
+                    posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
+                } catch (Exception exc) {
+                    eElementos = aux;
+                    hHero = (Hero) eElementos.get(0);
+                    level = auxLevel;
+                }
+                System.out.println("Seu personagem tem " + hHero.getVida() + " vidas restantes");
                 break;
             default:
                 break;

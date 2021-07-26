@@ -7,10 +7,10 @@ public class Main {
     /**
      * @param args the command line arguments
      */
+
+    // Factory = FactoryElemento.java
+    // Bridge = SaveLoad.java
     public static void main(String[] args) {
-        // Mensagem de inicio do jogo
-        System.out.println("Seu personagem começa com 3 vidas");
-        System.out.println("Boa sorte!");
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Tela tTela = new Tela();
