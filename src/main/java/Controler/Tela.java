@@ -176,13 +176,13 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             @Override
             public void run() {
                 // verifica se o jogo está pausado
-                if (!Consts.PAUSADO) {
+                if (!Consts.PAUSED) {
                     repaint(); /* (executa o metodo paint) */
                 }
             }
         };
 
-        while (Consts.PAUSADO){
+        while (Consts.PAUSED){
             // espera o player despausar
         }
         /*
