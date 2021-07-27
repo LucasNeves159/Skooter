@@ -171,15 +171,20 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
         eElementos = faseAtual;
     }
-
     public void go() {
         TimerTask redesenhar = new TimerTask() {
             @Override
             public void run() {
-                repaint(); /* (executa o metodo paint) */
+                // verifica se o jogo está pausado
+                if (!Consts.PAUSADO) {
+                    repaint(); /* (executa o metodo paint) */
+                }
             }
         };
 
+        while (Consts.PAUSADO){
+            // espera o player despausar
+        }
         /*
          * Redesenha (executa o metodo paint) tudo a cada Consts.FRAME_INTERVAL
          * milissegundos
@@ -304,6 +309,10 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                     level = auxLevel;
                 }
                 System.out.println("Seu personagem tem " + hHero.getVida() + " vidas restantes");
+                break;
+            case KeyEvent.VK_P:
+                // Pausa a execução do repaint
+                Consts.pauseGame();
                 break;
             default:
                 break;
