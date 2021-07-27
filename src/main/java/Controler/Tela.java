@@ -393,7 +393,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == 3) {
-
+            Consts.pauseGame();
+            
             int x = e.getX();
             int y = e.getY();
             x -= getInsets().left;
@@ -420,6 +421,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 } else
                     eElementos.add(new ObjetoProxy(chooser.getSelectedFile().getName())
                             .exibeObjeto(new Posicao(y / Consts.CELL_SIDE, x / Consts.CELL_SIDE)));
+                Consts.pauseGame();
             }
         }
     }
