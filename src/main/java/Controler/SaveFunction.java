@@ -10,7 +10,7 @@ import Auxiliar.Consts;
 public class SaveFunction implements SaveLoadFunction {
     public void run(SaveLoad sl) {
         try {
-            File fTemp = new File(new java.io.File(".").getCanonicalPath() + Consts.SAVEPATH + "saveData.gz");
+            File fTemp = new File(new java.io.File(".").getCanonicalPath() + Consts.SAVEPATH + "autoSaveData.gz");
             // File fTemp = new File(Consts.SAVEPATH + "saveData.gz");
             if (fTemp.exists()) {
                 fTemp.delete();

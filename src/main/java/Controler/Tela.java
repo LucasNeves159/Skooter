@@ -21,7 +21,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     private ArrayList<Elemento> eElementos;
     private ControleDeJogo cControle = new ControleDeJogo();
     private Graphics g2;
-    private SaveLoad autoSave;
+    private Thread autoSave;
 
     /**
      * Creates new form
@@ -57,7 +57,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         posicaoProjetada.setProjecao(hHero.getPosicao().getLinha() + 1, hHero.getPosicao().getColuna());
         System.out.println("Seu personagem começa com " + hHero.getVida() + " vidas");
         System.out.println("Boa sorte!");
-        autoSave = new SaveLoad(this);
+        autoSave = new Thread(new SaveLoad(this));
+        //autoSave = SaveLoad(this);
         autoSave.start();
     }
 
@@ -258,21 +259,21 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 Consts.AUTOSAVEINTERVAL = 0;
                 break;
             case KeyEvent.VK_1:
+                Consts.AUTOSAVEINTERVAL = 0;
                 // "1" seta autoSaveInterval = 7
                 Consts.AUTOSAVEINTERVAL = 7;
-                autoSave = new SaveLoad(this);
                 autoSave.start();
                 break;
             case KeyEvent.VK_2:
                 // "1" seta autoSaveInterval = 7
+                Consts.AUTOSAVEINTERVAL = 0;
                 Consts.AUTOSAVEINTERVAL = 10;
-                autoSave = new SaveLoad(this);
                 autoSave.start();
                 break;
             case KeyEvent.VK_3:
                 // "1" seta autoSaveInterval = 7
+                Consts.AUTOSAVEINTERVAL = 0;
                 Consts.AUTOSAVEINTERVAL = 15;
-                autoSave = new SaveLoad(this);
                 autoSave.start();
                 break;
             case KeyEvent.VK_N:
